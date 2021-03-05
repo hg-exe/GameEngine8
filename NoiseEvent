@@ -1,0 +1,13 @@
+        void CreateNoiseEvent()
+        {
+            print("I am making a noise");
+            Collider[] hitColliders = Physics.OverlapSphere(this.gameObject.transform.position, 10.0f);
+            foreach(var hitCollider in hitColliders)
+            {
+                CompanionCube cube = hitCollider.gameObject.GetComponent<CompanionCube>();
+                if(cube != null)
+                {
+                    cube.RespondToNoise();
+                }
+            }
+        }
