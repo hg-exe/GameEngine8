@@ -33,6 +33,7 @@ public class CompanionCube : MonoBehaviour
 
                 break;
             case Behaviours.Patrolling:
+                CheckForLineOfSight();
                 UpdatePatrol();
                 break;
             case Behaviours.Waiting:
@@ -53,7 +54,7 @@ public class CompanionCube : MonoBehaviour
         if(Vector3.Distance(transform.position, agent.destination) < 3.0f)
         {
             currentPatrolPoint++;
-            if(currentPatrolPoint > patrolPoints.Count){
+            if(currentPatrolPoint == patrolPoints.Count){
                 currentPatrolPoint = 0;
             }
             agent.SetDestination(patrolPoints[currentPatrolPoint].position);
@@ -62,6 +63,28 @@ public class CompanionCube : MonoBehaviour
         {
             return;
         }
+    }
+
+    bool CheckForLineOfSight()
+    {
+        RaycastHit hit;
+        Vector3 startPos = transform.position;
+        Vector3 targetPlayerPosition = player.transform.position + new Vector3(0.0f, 5.0f, 0.0f);
+        Vector3 direction = Vector3.Normalize(targetPlayerPosition - startPos);
+
+        Ray ray = new Ray(startPos, direction);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.collider.gameObject != player)
+            {
+                print(hit.collider.name + "is in the way");
+                return false;
+
+            }
+        }
+        print("Cube Can See Player");
+        return true;
     }
 }
 
