@@ -1,0 +1,53 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.AI;
+using UnityEngine;
+
+public class CompanionCube : MonoBehaviour
+{
+    //Defaults
+    public enum Behaviours { Chasing, Patrolling, Waiting, Investigating};
+    public Behaviours currentBehaviour;
+    NavMeshAgent agent;
+
+    //Chasing
+    [SerializeField] Transform player;
+
+    //Patrolling
+    public List<Transform> patrolPoints;
+    int currentPatrolPoint = -1;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        InvokeRepeating("UpdateAI", 0.0f, 2.0f);
+    }
+
+    void UpdateAI()
+    {
+        switch (currentBehaviour)
+        {
+            case Behaviours.Chasing:
+                agent.SetDestination(player.position);
+
+                break;
+            case Behaviours.Patrolling:
+                UpdatePatrol();
+                break;
+            case Behaviours.Waiting:
+                break;
+            case Behaviours.Investigating:
+                break;
+        }
+    }
+
+    void UpdatePatrol()
+    {
+        if(currentPatrolPoint < 0)
+        {
+            currentPatrolPoint = 0;
+            agent.SetDestination(patrolPoints[0].position);
+        }
+    }
+}
