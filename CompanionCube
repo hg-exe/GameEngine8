@@ -49,5 +49,19 @@ public class CompanionCube : MonoBehaviour
             currentPatrolPoint = 0;
             agent.SetDestination(patrolPoints[0].position);
         }
+
+        if(Vector3.Distance(transform.position, agent.destination) < 3.0f)
+        {
+            currentPatrolPoint++;
+            if(currentPatrolPoint > patrolPoints.Count){
+                currentPatrolPoint = 0;
+            }
+            agent.SetDestination(patrolPoints[currentPatrolPoint].position);
+        }
+        else
+        {
+            return;
+        }
     }
 }
+
