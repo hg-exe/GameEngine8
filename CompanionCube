@@ -33,7 +33,10 @@ public class CompanionCube : MonoBehaviour
 
                 break;
             case Behaviours.Patrolling:
-                CheckForLineOfSight();
+                if(CheckForLineOfSight() && IsplayerWithinRange(8.0f)){
+                    currentBehaviour = Behaviours.Chasing;
+                    return;
+                }
                 UpdatePatrol();
                 break;
             case Behaviours.Waiting:
@@ -83,8 +86,18 @@ public class CompanionCube : MonoBehaviour
 
             }
         }
-        print("Cube Can See Player");
+        print("I can see player");
         return true;
     }
+
+    bool IsplayerWithinRange(float range)
+    {
+        if(Vector3.Distance(player.transform.position, transform.position) < range)
+        {
+            return true;
+        }
+        return false;
+    }
 }
+
 
